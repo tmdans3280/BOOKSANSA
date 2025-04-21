@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useRef } from "react";
 
-export default function Home() {
+export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [inputState, setInputState] = useState(false);
@@ -80,6 +80,21 @@ export default function Home() {
             <ul className="absolute top-full  mt-6 w-[700px] bg-gray-500 text-white rounded-lg shadow-lg z-50 max-h-[401.4px] overflow-y-auto ">
               {searchList.map((item) => (
                 <li
+                  onClick={() =>
+                    nav("/bookdetail", {
+                      state: {
+                        thumbnail: item.thumbnail,
+                        title: item.title,
+                        authors: item.authors,
+                        price: item.price,
+                        datetime: item.datetime,
+                        publisher: item.publisher,
+                        contents: item.contents,
+                        url: item.url,
+                        sale: item.sale_price,
+                      },
+                    })
+                  }
                   key={item.isbn}
                   className="flex gap-4 items-center border-b border-gray-700 p-5 hover:bg-neutral-700 cursor-pointer"
                 >
@@ -100,7 +115,7 @@ export default function Home() {
         </div>
 
         <menu className="flex items-center  space-x-14 cursor-pointer">
-          <div className="hover:text-red-400">Popular</div>
+          <div onClick={()=>nav("/popular")} className="hover:text-red-400">Popular</div>
           <div className="hover:text-red-400">New Releases</div>
           <div className="hover:text-red-400">Genres</div>
           <div className="hover:text-red-400">My books</div>

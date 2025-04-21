@@ -13,7 +13,7 @@ export default function BookDetail() {
     datetime,
     contents,
     url,
-    sale,
+    sale_price,
   } = state;
 
   const formatDate = (targetDate) => {
@@ -44,16 +44,15 @@ export default function BookDetail() {
             alt="thumbnail"
           />
           <div className="top-full absolute flex gap-8 mt-4 justify-center">
-            <button className="border rounded-md flex p-3 text-2xl hover:bg-red-100 text-red-500 border-red-300">
-              <FaHeart className="text-red-500" />
+            <button className="inline-block w-36 rounded-xl border border-indigo-600 bg-indigo-600  text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden">
+              찜하기
             </button>
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-blue-100 text-blue-600 border-blue-300"
+              className="inline-block w-34 rounded-xl border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:ring-3 focus:outline-hidden"
             >
-              <FaShoppingCart className="text-blue-500 text-xl" />
               구매하기
             </a>
           </div>
@@ -75,13 +74,12 @@ export default function BookDetail() {
 
           <div className="text-lg">
             <span className="line-through text-gray-400 mr-2">{price}원</span>
-            <span className="text-red-400 font-semibold">{sale}원</span>
+            <span className="text-red-400 font-semibold">{sale_price}원</span>
           </div>
 
           <div className="text-sm space-y-2">
             <div className="font-semibold">📘 요약글</div>
             <p className="text-gray-300">
-              {" "}
               {contents.length > 100 ? contents + "..." : contents}
             </p>
             <a
