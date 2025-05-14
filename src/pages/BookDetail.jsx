@@ -1,8 +1,15 @@
 import { useLocation } from "react-router-dom";
 import Header from "../layout/Header";
-import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { formatDate } from "../util/formatDate";
+import { useContext } from "react";
+import { BookContext } from "../context/BookContext";
+import BookList from "../components/BookList";
+import { useEffect, useState } from "react";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function BookDetail() {
+  const { books, fetchBooks } = useContext(BookContext);
+
   const { state } = useLocation();
   const {
     thumbnail,
@@ -14,28 +21,18 @@ export default function BookDetail() {
     contents,
     url,
     sale_price,
+    isbn13,
   } = state;
 
-  const formatDate = (targetDate) => {
-    let year = targetDate.getFullYear();
-    let month = targetDate.getMonth() + 1;
-    let day = targetDate.getDate();
-
-    if (month < 10) {
-      month = `0${month}`;
-    }
-    if (day < 10) {
-      day = `0${day}`;
-    }
-
-    return `${year}년 ${month}월 ${day}일`;
-  };
+  useEffect(() => {
+    fetchBooks({ query: state.title.split(" ")[0], size: 10 });
+  }, []);
 
   return (
     <>
       <Header />
 
-      <div className="flex flex-col xl:flex-row bg-black mt-12 pb-24 text-white rounded-xl w-full max-w-5xl p-10 mx-auto gap-10 ">
+      <div className="flex flex-col xl:flex-row  mt-12 pb-24 text-black rounded-xl w-full max-w-5xl p-10 mx-auto gap-10 ">
         {/* 왼쪽 - 책 이미지 */}
         <div className="w-full  xl:w-1/3 flex justify-center relative">
           <img
@@ -44,14 +41,12 @@ export default function BookDetail() {
             alt="thumbnail"
           />
           <div className="top-full absolute flex gap-8 mt-4 justify-center">
-            <button className="inline-block w-36 rounded-xl border border-indigo-600 bg-indigo-600  text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden">
-              찜하기
-            </button>
+            <FavoriteButton book={state} />
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block w-34 rounded-xl border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:ring-3 focus:outline-hidden"
+              className="inline-block w-34 rounded-xl border border-indigo-600 px-12 py-3 text-sm font-medium text-black hover:bg-indigo-600 hover:text-white focus:ring-3 focus:outline-hidden"
             >
               구매하기
             </a>
@@ -69,7 +64,7 @@ export default function BookDetail() {
           </div>
 
           <div>
-            <p className="text-yellow-400">⭐️ 리뷰 점수 (예: 4.5)</p>
+            <p className="text-yellow-400">⭐️⭐️⭐️⭐️⭐️ </p>
           </div>
 
           <div className="text-lg">
@@ -78,20 +73,43 @@ export default function BookDetail() {
           </div>
 
           <div className="text-sm space-y-2">
-            <div className="font-semibold">📘 요약글</div>
-            <p className="text-gray-300">
+            <div className="font-semibold pb-2">📘 요약글</div>
+            <p className="text-gray-700">
               {contents.length > 100 ? contents + "..." : contents}
             </p>
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-400 underline text-sm inline-block mt-2 hover:text-blue-300"
+              className="text-blue-400 underline text-sm inline-block mt-2 hover:text-gray-300"
             >
               더보기 →
             </a>
           </div>
         </div>
+      </div>
+
+      <div className="mt-12 pb-12 mb-12 bg-emerald-500 pt-12 max-w-5xl mx-auto rounded-xl">
+        <div className="text-center text-2xl">이책과 비슷한 책</div>
+
+        <ul className="flex justify-center gap-20 mt-12">
+          {books.length > 0 &&
+            books
+              .filter(
+                (book) =>
+                  book.isbn13 !== state.isbn13 &&
+                  (book.authors.some((author) =>
+                    state.authors.includes(author)
+                  ) ||
+                    book.contents.includes(state.title.split(" ")[0]))
+              )
+              .slice(0, 4)
+              .map((book) => (
+                <li key={book.isbn13}>
+                  <BookList {...book} />
+                </li>
+              ))}
+        </ul>
       </div>
     </>
   );

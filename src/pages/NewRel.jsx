@@ -1,15 +1,14 @@
 import Header from "../layout/Header";
 import { useContext } from "react";
-import { PopularContext } from "../context/PopularContex";
-import { useState, useEffect } from "react";
-import { addFavorite, removeFavorite, getFavorite } from "../util/favorites";
+import { NewRelContext } from "../context/NewRelContext";
+import { useState } from "react";
 
 import BookItem from "../components/BookItem";
 
-export default function Popular() {
+export default function NewRel() {
   const basic_visibleCount = 5;
 
-  const { fetchPopularBooks, popularBooks } = useContext(PopularContext);
+  const { newRelBooks, fetchNewRelBooks } = useContext(NewRelContext);
   const [visibleCount, setVisibleCount] = useState(basic_visibleCount);
 
   const handleLodaMore = () => {
@@ -21,14 +20,14 @@ export default function Popular() {
       <Header />
 
       <div className="max-w-7xl mx-auto mt-8 ">
-        <div className="text-4xl text-center">인기책순위</div>
+        <div className="text-4xl text-center border-b-2 pb-12">최신책순위</div>
 
         <ul className="mt-20 ml-7 ">
-          {popularBooks.slice(0, visibleCount).map((item, index) => (
-            <BookItem key={item.isbn13} item={item} index={index} />
+          {newRelBooks.slice(0, visibleCount).map((item, index) => (
+            <BookItem key={item.isbn} item={item} index={index} />
           ))}
         </ul>
-        {visibleCount < popularBooks.length && (
+        {visibleCount < newRelBooks.length && (
           <div className="text-center mb-12  ">
             <button
               className="border rounded-xl text-3xl p-3 bg-indigo-600 hover:bg-indigo-500"

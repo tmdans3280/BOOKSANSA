@@ -1,8 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: "NanumPenScript";
+  src: url("/NanumPenScript-Regular.ttf");
+}
 
 body {
-    @apply bg-neutral-900 text-white;
-    margin: 0; /* ✅ 위쪽 여백 제거 */
-  }
+  @apply bg-white text-black;
+  margin: 0; /* ✅ 위쪽 여백 제거 */
+  font-family: "NanumPenScript";
+}

@@ -1,46 +1,25 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useContext } from "react";
 import BookList from "./BookList";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { PopularContext } from "../context/PopularContex";
 import leftarrow from "../assets/left-arrow.png";
 import rightarrow from "../assets/right-arrow.png";
 
-export default function NewReleases() {
-  const [NewReleasesBooks, setNewReleasesBooks] = useState([]);
+export default function PopularList() {
   const swiperRef = useRef(null);
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const res = await fetch(
-          `https://dapi.kakao.com/v3/search/book?query=도서&size=20&sort=latest`,
-          {
-            headers: {
-              Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374",
-            },
-          }
-        );
-        const data = await res.json();
-        setNewReleasesBooks(data.documents);
-      } catch (err) {
-        console.error("🔥 popularBooks 불러오기 실패:", err);
-      }
-    };
-
-    fetchBooks();
-  }, []);
+  const { popularBooks, fetchPopularBooks } = useContext(PopularContext);
 
   return (
-    <div>
-      <div className="mt-36 mb-12 text-2xl">신간 도서</div>
-      {NewReleasesBooks.length === 0 ? (
+    <div className="pt-12">
+      <div className="mt-12 mb-12 text-2xl">인기 도서</div>
+      {popularBooks.length === 0 ? (
         <p>로딩 중...</p>
       ) : (
         <div className="relative flex">
           <button onClick={() => swiperRef.current?.slidePrev()}>
             <img src={leftarrow} alt="leftarrow" className="w-12 mb-12" />
           </button>
-
           <Swiper
             className="max-w-5xl  "
             spaceBetween={20}
@@ -49,7 +28,7 @@ export default function NewReleases() {
               swiperRef.current = swiper;
             }}
           >
-            {NewReleasesBooks.map((item) => (
+            {popularBooks.map((item) => (
               <SwiperSlide key={item.isbn}>
                 <BookList {...item} />
               </SwiperSlide>

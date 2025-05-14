@@ -13,5 +13,9 @@ export default function Rating() {
       stars.push(<FaRegStar key={i} />);
     }
   }
-  return <div className="flex text-yellow-400 text-lg gap-1">{stars}</div>;
+  return (
+    <div className="flex text-yellow-400 text-lg gap-1 ">
+      {stars}
+    </div>
+  );
 }

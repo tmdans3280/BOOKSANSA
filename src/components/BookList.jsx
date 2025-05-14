@@ -11,6 +11,7 @@ export default function BookList({
   contents,
   url,
   sale_price,
+  isbn13,
 }) {
   const nav = useNavigate();
 
@@ -28,24 +29,23 @@ export default function BookList({
             contents,
             url,
             sale_price,
+            isbn13,
           },
         })
       }
-      className="relative z-10 overflow-visible"
+      className="relative cursor-pointer text-center w-[150px]"
     >
-      <div className="relative cursor-pointer group text-center">
-        <div>
-          <img
-            className="mx-auto max-w-[120px] h-auto object-contain "
-            src={thumbnail}
-            alt="thumbnail"
-          />
-        </div>
-        <div className="mt-4 line-clamp-2 h-[3rem]">{title}</div>
-        <div className="flex items-center  mt-1 gap-1 justify-center">
-          <Rating />
-          <span className="ml-2 text-white text-sm">4.5</span>
-        </div>
+      <div>
+        <img
+          className="w-32 h-48 object-cover border border-gray-200 rounded m-auto  "
+          src={thumbnail}
+          alt="thumbnail"
+        />
+      </div>
+      <div className="mt-4 line-clamp-2 h-[3rem]">{title}</div>
+      <div className="flex items-center  mt-1 gap-1 justify-center">
+        <Rating />
+        <span className="ml-2 text-black text-sm">4.5</span>
       </div>
     </div>
   );
