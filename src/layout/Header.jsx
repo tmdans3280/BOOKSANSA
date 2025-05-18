@@ -132,7 +132,7 @@ export default function Header() {
                       },
                     })
                   }
-                  key={item.isbn13}
+                  key={item.isbn}
                   className="flex gap-4 items-center border-b border-gray-700 p-5 hover:bg-neutral-700 cursor-pointer"
                 >
                   <img

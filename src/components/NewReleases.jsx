@@ -1,63 +1,23 @@
-import { useState, useRef, useEffect } from "react";
 import BookList from "./BookList";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import leftarrow from "../assets/left-arrow.png";
-import rightarrow from "../assets/right-arrow.png";
+import { BookContext } from "../context/BookContext";
+import { useContext } from "react";
 
 export default function NewReleases() {
-  const [NewReleasesBooks, setNewReleasesBooks] = useState([]);
-  const swiperRef = useRef(null);
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const res = await fetch(
-          `https://dapi.kakao.com/v3/search/book?query=도서&size=20&sort=latest`,
-          {
-            headers: {
-              Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374",
-            },
-          }
-        );
-        const data = await res.json();
-        setNewReleasesBooks(data.documents);
-      } catch (err) {
-        console.error("🔥 popularBooks 불러오기 실패:", err);
-      }
-    };
-
-    fetchBooks();
-  }, []);
+  const { publisherBooks } = useContext(BookContext);
 
   return (
     <div>
-      <div className="mt-36 mb-12 text-2xl">신간 도서</div>
-      {NewReleasesBooks.length === 0 ? (
+      <div className="mt-36 mb-12 text-2xl">출판사의 선택</div>
+      {publisherBooks.length === 0 ? (
         <p>로딩 중...</p>
       ) : (
-        <div className="relative flex">
-          <button onClick={() => swiperRef.current?.slidePrev()}>
-            <img src={leftarrow} alt="leftarrow" className="w-12 mb-12" />
-          </button>
-
-          <Swiper
-            className="max-w-5xl  "
-            spaceBetween={20}
-            slidesPerView={5}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-          >
-            {NewReleasesBooks.map((item) => (
-              <SwiperSlide key={item.isbn}>
-                <BookList {...item} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <button onClick={() => swiperRef.current?.slideNext()}>
-            <img src={rightarrow} alt="rightarrow" className="w-12 mb-12" />
-          </button>
+        <div className="relative flex  justify-between">
+          {publisherBooks.map((item) => (
+            <div key={item.isbn}>
+              <BookList {...item} />
+            </div>
+          ))}
         </div>
       )}
     </div>

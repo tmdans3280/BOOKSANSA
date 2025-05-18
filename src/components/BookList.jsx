@@ -11,7 +11,7 @@ export default function BookList({
   contents,
   url,
   sale_price,
-  isbn13,
+  isbn,
 }) {
   const nav = useNavigate();
 
@@ -29,16 +29,16 @@ export default function BookList({
             contents,
             url,
             sale_price,
-            isbn13,
+            isbn,
           },
         })
       }
-      className="relative cursor-pointer text-center w-[150px]"
+      className="relative cursor-pointer text-center w-[300px]"
     >
       <div>
         <img
-          className="w-32 h-48 object-cover border border-gray-200 rounded m-auto  "
-          src={thumbnail}
+          className="w-50 h-64 object-cover border border-gray-200 rounded m-auto  "
+          src={thumbnail.replace("R120x174", "R300x400")}
           alt="thumbnail"
         />
       </div>

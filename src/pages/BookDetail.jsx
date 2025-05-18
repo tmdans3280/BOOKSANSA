@@ -21,7 +21,7 @@ export default function BookDetail() {
     contents,
     url,
     sale_price,
-    isbn13,
+    isbn,
   } = state;
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function BookDetail() {
             books
               .filter(
                 (book) =>
-                  book.isbn13 !== state.isbn13 &&
+                  book.isbn !== state.isbn &&
                   (book.authors.some((author) =>
                     state.authors.includes(author)
                   ) ||
@@ -105,7 +105,7 @@ export default function BookDetail() {
               )
               .slice(0, 4)
               .map((book) => (
-                <li key={book.isbn13}>
+                <li key={book.isbn}>
                   <BookList {...book} />
                 </li>
               ))}

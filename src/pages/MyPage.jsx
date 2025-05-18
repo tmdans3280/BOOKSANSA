@@ -1,12 +1,28 @@
 import { useState, useEffect } from "react";
 import Header from "../layout/Header";
 import { useFavorites } from "../context/FavoriteContext";
+import { fetchBookByIsbn } from "../util/kakao";
 
 export default function Home() {
-  const { favoriteBooks, toggleFavorite, isLoading } = useFavorites();
+  const { favoriteBooks, isLoading } = useFavorites();
+  const [bookList, setBookList] = useState([]);
+
   useEffect(() => {
-    console.log("🔥 찜한 책 목록:", favoriteBooks);
+    const fetchBooks = async () => {
+      const results = await Promise.all(
+        favoriteBooks.map((isbn) => fetchBookByIsbn(isbn.split(" ").pop()))
+      );
+      setBookList(results.filter(Boolean)); // null 제거
+    };
+    if (favoriteBooks.length > 0) {
+      fetchBooks();
+    }
   }, [favoriteBooks]);
+
+  useEffect(() => {
+    console.log("📌 favoriteBooks:", favoriteBooks);
+  }, [favoriteBooks]);
+  if (isLoading) return <p>로딩 중...</p>;
 
   return (
     <div>
@@ -14,17 +30,12 @@ export default function Home() {
 
       <div className="flex flex-col text-center">
         <div className="text-4xl">내가 찜한책</div>
-        {isLoading ? (
-          <p>로딩 중...</p>
-        ) : (
-          <div>
-            {favoriteBooks.length === 0 ? (
-              <p>찜한 책이 없습니다.</p>
-            ) : (
-              favoriteBooks.map((item) => <div key={item}>{item}</div>)
-            )}
+        {bookList.map((book) => (
+          <div key={book.isbn}>
+            <img src={book.thumbnail} alt="thumbnail" />
+            <div>{book.title}</div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
