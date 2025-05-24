@@ -36,7 +36,7 @@ export default function Header() {
 
           setTimeout(() => {}, 300);
         } catch (err) {
-          console.log("error발생");
+          console.log("error발생", err);
         }
       } else {
         setSearchList([]);

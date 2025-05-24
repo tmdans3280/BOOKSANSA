@@ -8,7 +8,7 @@ import BookItem from "../components/BookItem";
 export default function NewRel() {
   const basic_visibleCount = 5;
 
-  const { newRelBooks, fetchNewRelBooks } = useContext(NewRelContext);
+  const { newRelBooks } = useContext(NewRelContext);
   const [visibleCount, setVisibleCount] = useState(basic_visibleCount);
 
   const handleLodaMore = () => {

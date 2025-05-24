@@ -8,7 +8,7 @@ export function PopularProvider({ children }) {
   const fetchPopularBooks = async () => {
     try {
       const res = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=한강&size=50&sort=accuracy`,
+        `https://dapi.kakao.com/v3/search/book?query=소설&size=10&sort=accuracy`,
         {
           headers: {
             Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374",

@@ -28,18 +28,18 @@ export default function MainBook() {
 
   if (!mainBook || mainBook.length === 0) return null;
   return (
-    <div className="flex gap-12 ">
-      <div className="flex h-[450px] bg-black mt-12 text-white rounded-xl  w-full max-w-5xl p-20 ">
-        <img
-          className="w-44 h-auto rounded shadow"
-          src={mainBook[0].thumbnail.replace("R120x174", "R300x400")}
-          alt="noimg"
-        />
+    <div className="flex-col h-[450px] bg-[#fef9f3] mt-12 text-black rounded-xl  w-full max-w-3xl p-20 mx-auto">
+      <h2 className="text-5xl mt-6 font-bold text-center ">TODAY'S PICK</h2>
+      <div className="flex">
+        <div>
+          <img
+            className="w-48 h-auto rounded-xl shadow"
+            src={mainBook[0].thumbnail.replace("R120x174", "R300x400")}
+            alt="noimg"
+          />
+        </div>
 
         <div className="ml-12 flex flex-col">
-          <div className="text-5xl mt-6 font-bold text-center ">
-            오늘의 추천 책
-          </div>
           <button
             onClick={() =>
               nav("/bookdetail", {
@@ -52,7 +52,6 @@ export default function MainBook() {
           </button>
         </div>
       </div>
-      <div className="flex bg-black mt-12 text-white rounded-xl w-full max-w-[250px] p-20"></div>
     </div>
   );
 }

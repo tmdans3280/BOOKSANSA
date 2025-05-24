@@ -8,7 +8,7 @@ export function NewRelProvider({ children }) {
   const fetchNewRelBooks = async () => {
     try {
       const res = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=도서&size=50&sort=latest`,
+        `https://dapi.kakao.com/v3/search/book?query=도서&size=10&sort=latest`,
         {
           headers: {
             Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374",

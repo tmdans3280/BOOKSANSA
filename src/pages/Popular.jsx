@@ -1,15 +1,14 @@
 import Header from "../layout/Header";
 import { useContext } from "react";
 import { PopularContext } from "../context/PopularContex";
-import { useState, useEffect } from "react";
-import { addFavorite, removeFavorite, getFavorite } from "../util/favorites";
+import { useState } from "react";
 
 import BookItem from "../components/BookItem";
 
 export default function Popular() {
   const basic_visibleCount = 5;
 
-  const { fetchPopularBooks, popularBooks } = useContext(PopularContext);
+  const { popularBooks } = useContext(PopularContext);
   const [visibleCount, setVisibleCount] = useState(basic_visibleCount);
 
   const handleLodaMore = () => {

@@ -2,13 +2,13 @@ import { useLocation } from "react-router-dom";
 import Header from "../layout/Header";
 import { formatDate } from "../util/formatDate";
 import { useContext } from "react";
-import { BookContext } from "../context/BookContext";
 import BookList from "../components/BookList";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import FavoriteButton from "../components/FavoriteButton";
+import { BookListContext } from "../context/BookListContext";
 
 export default function BookDetail() {
-  const { books, fetchBooks } = useContext(BookContext);
+  const { bookList, fetchBooks } = useContext(BookListContext);
 
   const { state } = useLocation();
   const {
@@ -20,13 +20,13 @@ export default function BookDetail() {
     datetime,
     contents,
     url,
-    sale_price,
     isbn,
+    sale_price,
   } = state;
 
   useEffect(() => {
     fetchBooks({ query: state.title.split(" ")[0], size: 10 });
-  }, []);
+  }, [fetchBooks, state.title]);
 
   return (
     <>
@@ -75,7 +75,9 @@ export default function BookDetail() {
           <div className="text-sm space-y-2">
             <div className="font-semibold pb-2">📘 요약글</div>
             <p className="text-gray-700">
-              {contents.length > 100 ? contents + "..." : contents}
+              {contents.length > 100
+                ? contents.slice(0, 230) + "..."
+                : contents}
             </p>
             <a
               href={url}
@@ -93,11 +95,11 @@ export default function BookDetail() {
         <div className="text-center text-2xl">이책과 비슷한 책</div>
 
         <ul className="flex justify-center gap-20 mt-12">
-          {books.length > 0 &&
-            books
+          {bookList.length > 0 &&
+            bookList
               .filter(
                 (book) =>
-                  book.isbn !== state.isbn &&
+                  book.isbn !== isbn &&
                   (book.authors.some((author) =>
                     state.authors.includes(author)
                   ) ||

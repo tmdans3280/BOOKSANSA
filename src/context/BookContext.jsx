@@ -11,7 +11,7 @@ export function BookProvider({ children }) {
 
     try {
       const res = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=${query}&size=4&sort=latest`,
+        `https://dapi.kakao.com/v3/search/book?query=${query}&size=5&sort=latest`,
         {
           headers: {
             Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374",
@@ -25,7 +25,7 @@ export function BookProvider({ children }) {
         setPublisherBooks(data.documents);
       }
     } catch (err) {
-      console.log("error");
+      console.error("error:", err);
     }
   };
 

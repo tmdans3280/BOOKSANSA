@@ -40,7 +40,7 @@ export default function BookItem({ item, index }) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block w-40 rounded-xl border border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:ring-3 focus:outline-hidden"
+            className="inline-block w-32 rounded-xl border border-indigo-600 px-9 py-3 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:ring-3 focus:outline-hidden"
           >
             구매하기
           </a>
