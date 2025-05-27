@@ -12,7 +12,7 @@ export function BookListProvider({ children }) {
         `https://dapi.kakao.com/v3/search/book?query=${query}&size=${size}`,
         {
           headers: {
-            Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374", // ← 너가 쓰는 카카오 API 키
+            Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374", 
           },
         }
       );

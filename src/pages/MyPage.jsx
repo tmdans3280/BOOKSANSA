@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const fetchBooks = async () => {
       const results = await Promise.all(
-        favoriteBooks.map((isbn) => fetchBookByIsbn(isbn.split(" ").pop()))
+        favoriteBooks.slice(0, 4).map((isbn) => fetchBookByIsbn(isbn.split(" ").pop()))
       );
       setBookList(results.filter(Boolean)); // null 제거
     };

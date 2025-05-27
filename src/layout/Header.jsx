@@ -102,7 +102,7 @@ export default function Header() {
         <div ref={inputRef} className="flex flex-col relative  ml-16">
           <div className="flex  gap-4 text-center relative  ">
             <input
-              className="text-black border-black border-2 rounded-xl p-6 h-10 w-96 max-w-[600px]  z-0"
+              className="text-black border-black border-2 rounded-xl p-6 h-10 w-96 max-w-[600px]  z-0 "
               value={bookSearch}
               onChange={onChangeInput}
               placeholder="검색어를 입력하세요."

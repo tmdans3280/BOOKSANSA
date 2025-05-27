@@ -1,14 +1,14 @@
 import { useLocation } from "react-router-dom";
 import Header from "../layout/Header";
 import { formatDate } from "../util/formatDate";
-import { useContext } from "react";
-import BookList from "../components/BookList";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import FavoriteButton from "../components/FavoriteButton";
 import { BookListContext } from "../context/BookListContext";
+import ReviewModal from "../components/ReviewModal";
 
 export default function BookDetail() {
   const { bookList, fetchBooks } = useContext(BookListContext);
+  const [selectModal, setSelectModal] = useState(false);
 
   const { state } = useLocation();
   const {
@@ -24,9 +24,17 @@ export default function BookDetail() {
     sale_price,
   } = state;
 
-  useEffect(() => {
-    fetchBooks({ query: state.title.split(" ")[0], size: 10 });
-  }, [fetchBooks, state.title]);
+  useEffect(
+    () => {
+      const keyword = state.title?.split(" ")[0];
+
+      // 키워드가 없거나 너무 짧거나 이미 리스트가 있으면 skip
+      if (!keyword || keyword.length < 2 || bookList.length > 0) return;
+
+      fetchBooks({ query: keyword, size: 6 }); // size 줄이기
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fetchBooks, state.title]
+  );
 
   return (
     <>
@@ -63,8 +71,9 @@ export default function BookDetail() {
             <div>출간일: {formatDate(new Date(datetime))}</div>
           </div>
 
-          <div>
+          <div className="flex">
             <p className="text-yellow-400">⭐️⭐️⭐️⭐️⭐️ </p>
+            <p>리뷰</p>
           </div>
 
           <div className="text-lg">
@@ -91,8 +100,9 @@ export default function BookDetail() {
         </div>
       </div>
 
-      <div className="mt-12 pb-12 mb-12 bg-emerald-500 pt-12 max-w-5xl mx-auto rounded-xl">
-        <div className="text-center text-2xl">이책과 비슷한 책</div>
+      {/* 이책과 비슷한책 */}
+      <div className="mt-10 pb-12 mb-12 bg-[#fdf6ee] pt-8 max-w-5xl mx-auto rounded-xl">
+        <div className="text-center text-3xl font-bold">이책과 비슷한 책</div>
 
         <ul className="flex justify-center gap-20 mt-12">
           {bookList.length > 0 &&
@@ -108,10 +118,24 @@ export default function BookDetail() {
               .slice(0, 4)
               .map((book) => (
                 <li key={book.isbn}>
-                  <BookList {...book} />
+                  <img src={book.thumbnail} alt="" />
+                  <div>{book.title}</div>
+                  <div>{book.authors}</div>
                 </li>
               ))}
         </ul>
+      </div>
+
+      {/* 리뷰 */}
+      <div>
+        <button onClick={() => setSelectModal(!selectModal)}>리뷰작성</button>
+        {selectModal && (
+          <ReviewModal
+            img={state.thumbnail}
+            author={state.authors}
+            title={state.title}
+          />
+        )}
       </div>
     </>
   );
