@@ -1,21 +1,31 @@
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { useState } from "react";
 
-export default function Rating() {
-  const rating = 4.5;
-  const stars = [];
+export default function StarRating({ totalStars = 5, onChange }) {
+  const [rating, setRating] = useState(0);         // 실제 선택된 별점
+  const [hovered, setHovered] = useState(0);       // 마우스 올린 위치
 
-  for (let i = 1; i <= 5; i++) {
-    if (rating >= i) {
-      stars.push(<FaStar key={i} />);
-    } else if (rating >= i - 0.5) {
-      stars.push(<FaStarHalfAlt key={i} />);
-    } else {
-      stars.push(<FaRegStar key={i} />);
-    }
-  }
+  const handleClick = (index) => {
+    setRating(index);
+    if (onChange) onChange(index);                 // 외부 전달용 콜백
+  };
+
   return (
-    <div className="flex text-yellow-400 text-lg gap-1 ">
-      {stars}
+    <div className="flex space-x-1">
+      {[...Array(totalStars)].map((_, i) => {
+        const starIndex = i + 1;
+        return (
+          <span
+            key={i}
+            className={`cursor-pointer text-3xl transition 
+              ${starIndex <= (hovered || rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+            onClick={() => handleClick(starIndex)}
+            onMouseEnter={() => setHovered(starIndex)}
+            onMouseLeave={() => setHovered(0)}
+          >
+            ★
+          </span>
+        );
+      })}
     </div>
   );
 }

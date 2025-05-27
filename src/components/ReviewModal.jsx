@@ -1,4 +1,6 @@
-export default function ReviewModal({ img, author, title }) {
+import Rating from "../util/Rating";
+
+export default function ReviewModal({ img, title }) {
   return (
     // 모달 외부
     <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black/40 z-50 flex-col">
@@ -11,7 +13,7 @@ export default function ReviewModal({ img, author, title }) {
           <div className="mt-2">{title}</div>
         </div>
 
-        <div className="mt-12">별별별별별</div>
+        <div className="mt-12"><Rating /></div>
         <textarea
           className="border rounded-lg text-black"
           name="리뷰를 작성해주세요."
