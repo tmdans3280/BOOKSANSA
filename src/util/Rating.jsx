@@ -10,7 +10,7 @@ export default function StarRating({ totalStars = 5, onChange }) {
   };
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex space-x-1 ">
       {[...Array(totalStars)].map((_, i) => {
         const starIndex = i + 1;
         return (

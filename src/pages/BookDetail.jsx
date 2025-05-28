@@ -37,10 +37,10 @@ export default function BookDetail() {
   );
 
   return (
-    <>
+    <div className="max-w-5xl mx-auto">
       <Header />
 
-      <div className="flex flex-col xl:flex-row  mt-12 pb-24 text-black rounded-xl w-full max-w-5xl p-10 mx-auto gap-10 ">
+      <div className="flex flex-col xl:flex-row  mt-12 pb-24 text-black rounded-xl w-full  p-10 mx-auto gap-10 ">
         {/* 왼쪽 - 책 이미지 */}
         <div className="w-full  xl:w-1/3 flex justify-center relative">
           <img
@@ -98,10 +98,13 @@ export default function BookDetail() {
             </a>
           </div>
         </div>
+
+
+        
       </div>
 
       {/* 이책과 비슷한책 */}
-      <div className="mt-10 pb-12 mb-12 bg-[#fdf6ee] pt-8 max-w-5xl mx-auto rounded-xl">
+      <div className="mt-10 pb-12 mb-12 bg-[#fdf6ee] pt-8  mx-auto rounded-xl">
         <div className="text-center text-3xl font-bold">이책과 비슷한 책</div>
 
         <ul className="flex justify-center gap-20 mt-12">
@@ -127,16 +130,17 @@ export default function BookDetail() {
       </div>
 
       {/* 리뷰 */}
-      <div>
-        <button onClick={() => setSelectModal(!selectModal)}>리뷰작성</button>
+      <div className="">
+        <button onClick={() => setSelectModal(true)}>리뷰작성</button>
         {selectModal && (
           <ReviewModal
             img={state.thumbnail}
             author={state.authors}
             title={state.title}
+            onClose={() => setSelectModal(false)}
           />
         )}
       </div>
-    </>
+    </div>
   );
 }

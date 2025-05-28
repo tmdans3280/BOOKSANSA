@@ -7,7 +7,7 @@ export function BookProvider({ children }) {
   const [publisherBooks, setPublisherBooks] = useState([]);
 
   const fetchBooksByType = async (type) => {
-    const query = type === "today" ? "코딩" : "출판사 추천";
+    const query = type === "today" ? "한강" : "출판사 추천";
 
     try {
       const res = await fetch(
