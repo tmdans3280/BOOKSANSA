@@ -7,18 +7,23 @@ import "swiper/css";
 import "swiper/css/navigation";
 import FavoriteButton from "../components/FavoriteButton";
 import { useNavigate } from "react-router-dom";
-
+import { getDocs } from "firebase/firestore";
 import { Navigation } from "swiper/modules";
+import { readReview } from "../util/review";
+import Rating from "../util/Rating";
 
 export default function Home() {
   const { favoriteBooks, isLoading } = useFavorites();
   const [bookList, setBookList] = useState([]);
+  const [reviewList, setReviewList] = useState([]);
   const nav = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
       const results = await Promise.all(
-        favoriteBooks.slice(0, 4).map((isbn) => fetchBookByIsbn(isbn.split(" ").pop()))
+        favoriteBooks
+          .slice(0, 4)
+          .map((isbn) => fetchBookByIsbn(isbn.split(" ").pop()))
       );
       setBookList(results.filter(Boolean)); // null 제거
     };
@@ -26,6 +31,18 @@ export default function Home() {
       fetchBooks();
     }
   }, [favoriteBooks]);
+
+  useEffect(() => {
+    const fetchReviewBooks = async () => {
+      const reviewSnapshot = await getDocs(readReview());
+      const reviewData = reviewSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setReviewList(reviewData);
+    };
+    fetchReviewBooks();
+  }, []);
 
   if (isLoading) return <p>로딩 중...</p>;
 
@@ -81,6 +98,19 @@ export default function Home() {
               </SwiperSlide>
             ))}
           </Swiper>
+        </div>
+      </div>
+      <div>
+        <div>내가 쓴 리뷰</div>
+        <div>
+          {reviewList.map((review, index) => (
+            <div key={review.userId + index}>
+              <div>{review.content}</div>
+              <div>
+                <Rating rating={review.rating} />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

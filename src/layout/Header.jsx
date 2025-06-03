@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { useRef } from "react";
 import logo from "../assets/logo.png";
 import menuicon from "../assets/menuicon.png";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
@@ -56,15 +57,19 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsLogin(!!user);
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLogin(!!user);
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLogin(false);
-
-    nav("/");
+    const auth = getAuth();
+    auth.signOut().then(() => {
+      setIsLogin(false);
+      nav("/");
+    });
   };
 
   return (

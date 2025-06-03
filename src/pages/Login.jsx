@@ -13,7 +13,7 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("로그인 성공!");
-      localStorage.setItem("user", email); // 로그인 상태 저장
+      localStorage.setItem("user", email); //   로그인 상태 저장
       navigate("/"); // 메인페이지로 이동
     } catch (error) {
       alert("로그인 실패: " + error.message);
