@@ -8,11 +8,25 @@ import ReviewModal from "../components/ReviewModal";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase.js";
-import { readReview } from "../util/review.js";
 import { getDocs } from "firebase/firestore";
 import Rating from "../util/Rating";
+import { getReviewByBookId } from "../util/review.js";
 
 export default function BookDetail() {
+  const { state } = useLocation();
+  const {
+    thumbnail,
+    title,
+    authors,
+    publisher,
+    price,
+    datetime,
+    contents,
+    url,
+    isbn,
+    sale_price,
+  } = state;
+
   const { bookList, fetchBooks } = useContext(BookListContext);
   const [selectModal, setSelectModal] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -34,7 +48,7 @@ export default function BookDetail() {
 
   useEffect(() => {
     const fetchReviewBooks = async () => {
-      const reviewSnapshot = await getDocs(readReview());
+      const reviewSnapshot = await getDocs(getReviewByBookId(state.isbn));
       const reviewData = reviewSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -42,22 +56,7 @@ export default function BookDetail() {
       setReviewList(reviewData);
     };
     fetchReviewBooks();
-  }, []);
-
-  const { state } = useLocation();
-  const {
-    thumbnail,
-    title,
-    authors,
-    publisher,
-    price,
-    datetime,
-    contents,
-    url,
-    isbn,
-    sale_price,
-  } = state;
-  console.log("테스트",state.isbn)
+  }, [state.isbn]);
 
   useEffect(
     () => {
@@ -161,8 +160,9 @@ export default function BookDetail() {
 
       {/* 리뷰 */}
       <div className="mb-40">
-        <div className="border-b-2">
+        <div className=" flex justify-end mb-6 ">
           <button
+            className="border p-2 rounded-xl bg-[#cfd0b7] "
             onClick={() => {
               userId ? setSelectModal(true) : nav("/login");
             }}
@@ -172,26 +172,31 @@ export default function BookDetail() {
         </div>
 
         <ul>
-          {reviewList.map((book) => (
-            <li key={`${book.bookid}_${book.userId}`} className="border flex py-4">
-              <div>
-                <Rating rating={book.rating} />
-              </div>
-
-              <div className="flex-col ml-12">
-                <div className="text-sm">
-                  {book.userId.slice(0, 3) + "****"}
-                  {formatDate(book.createdAt)}
+          {reviewList.map((book) => {
+            return (
+              <li key={book.id} className="border flex py-4 h-32  ">
+                <div className="items-center flex ml-3">
+                  <Rating rating={book.rating} readOnly />
                 </div>
-                <div className="text-sl">{book.content}</div>
-              </div>
-            </li>
-          ))}
+
+                <div className="flex-col ml-12 ">
+                  <div className="text-sm flex">
+                    <div className="mr-4">
+                      {book.userId.slice(0, 3) + "****"}
+                    </div>
+                    <p>|</p>
+                    <div className="ml-4">{formatDate(book.createdAt)}</div>
+                  </div>
+
+                  <div className="mt-2">{book.content}</div>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         {userId && selectModal && (
           <ReviewModal
-            userId={userId}
             bookId={state.isbn}
             img={state.thumbnail}
             author={state.authors}

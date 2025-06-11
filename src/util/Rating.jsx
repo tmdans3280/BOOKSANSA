@@ -1,10 +1,17 @@
 import { useState } from "react";
 
-export default function StarRating({ totalStars = 5, rating, onChangeRating }) {
+export default function StarRating({
+  totalStars = 5,
+  rating,
+  onChangeRating,
+  readOnly = false,
+}) {
   const [hovered, setHovered] = useState(0); // 마우스 올린 위치
 
   const handleClick = (index) => {
-    onChangeRating(index);
+    if (!readOnly) {
+      onChangeRating(index);
+    }
   };
 
   return (
@@ -21,8 +28,8 @@ export default function StarRating({ totalStars = 5, rating, onChangeRating }) {
                   : "text-gray-300"
               }`}
             onClick={() => handleClick(starIndex)}
-            onMouseEnter={() => setHovered(starIndex)}
-            onMouseLeave={() => setHovered(0)}
+            onMouseEnter={() => !readOnly && setHovered(starIndex)}
+            onMouseLeave={() => !readOnly && setHovered(0)}
           >
             ★
           </span>

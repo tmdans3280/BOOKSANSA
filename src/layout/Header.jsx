@@ -5,12 +5,14 @@ import { useRef } from "react";
 import logo from "../assets/logo.png";
 import menuicon from "../assets/menuicon.png";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import CategoryModal from "../components/categoryModal";
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [inputState, setInputState] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [categoryState, setCategoryState] = useState(false);
   const inputRef = useRef(null);
 
   const nav = useNavigate();
@@ -158,22 +160,26 @@ export default function Header() {
       </div>
 
       {/* 메뉴바 */}
-      <div className="flex justify-between items-center mt-8 ">
-        {/* 분야 */}
-        <div className="flex ml-4">
+      <div className="flex justify-between items-center mt-8 relative ">
+        {/* 카테고리 */}
+        <div className="flex flex-col ">
           <div
-            onClick={() => nav("/popular")}
-            className="hover:text-red-400 mr-12"
+            onClick={() => {
+              setCategoryState(true);
+            }}
+            className=" cursor-pointer"
           >
             <img src={menuicon} alt="menuicon" className="w-8 " />
           </div>
-          <div>분야</div>
-          <p className="text-xl ml-6">|</p>
+
+          <div className="absolute w-[1196px] top-full   ">
+            {categoryState && <CategoryModal />}
+          </div>
         </div>
 
         {/* 메뉴 */}
         <nav className="flex cursor-pointer ">
-          <div className="flex gap-16">
+          <div className="flex gap-24 text-xl">
             <div onClick={() => nav("/popular")} className="hover:text-red-400">
               인기 도서
             </div>

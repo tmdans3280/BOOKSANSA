@@ -2,8 +2,8 @@ import Rating from "../util/Rating";
 import cancel from "../assets/cancel.png";
 import { addReview } from "../util/review";
 import { useState } from "react";
-
-export default function ReviewModal({ img, title, onClose, userId, bookId }) {
+import { auth } from "../firebase";
+export default function ReviewModal({ img, title, onClose, bookId }) {
   const [reviewData, setReviewData] = useState({
     rating: 0,
     content: "",
@@ -25,9 +25,15 @@ export default function ReviewModal({ img, title, onClose, userId, bookId }) {
       return;
     }
 
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
     try {
       await addReview({
-        userId,
+        userId: currentUser.uid,
         bookId,
         rating,
         content,

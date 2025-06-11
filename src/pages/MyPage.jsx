@@ -9,8 +9,10 @@ import FavoriteButton from "../components/FavoriteButton";
 import { useNavigate } from "react-router-dom";
 import { getDocs } from "firebase/firestore";
 import { Navigation } from "swiper/modules";
-import { readReview } from "../util/review";
+import { getReviewByUserId } from "../util/review";
 import Rating from "../util/Rating";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Home() {
   const { favoriteBooks, isLoading } = useFavorites();
@@ -33,15 +35,18 @@ export default function Home() {
   }, [favoriteBooks]);
 
   useEffect(() => {
-    const fetchReviewBooks = async () => {
-      const reviewSnapshot = await getDocs(readReview());
-      const reviewData = reviewSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setReviewList(reviewData);
-    };
-    fetchReviewBooks();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const reviewSnapshot = await getDocs(getReviewByUserId(user.uid));
+        const reviewData = reviewSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setReviewList(reviewData);
+      }
+    });
+
+    return () => unsubscribe(); // cleanup
   }, []);
 
   if (isLoading) return <p>로딩 중...</p>;

@@ -9,6 +9,7 @@ import {
   query,
   doc,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 
 const reviewCollection = collection(db, "reviews");
@@ -42,6 +43,10 @@ export const updateReview = async (reviewId, updatedData) => {
   }
 };
 
-export const readReview = () => {
-  return query(reviewCollection);
+export const getReviewByUserId = (userId) => {
+  return query(reviewCollection, where("userId", "==", userId));
+};
+
+export const getReviewByBookId = (bookId) => {
+  return query(reviewCollection, where("bookId", "==", bookId));
 };
