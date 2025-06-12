@@ -6,6 +6,7 @@ import logo from "../assets/logo.png";
 import menuicon from "../assets/menuicon.png";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import CategoryModal from "../components/categoryModal";
+import cancel from "../assets/cancel.png";
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
@@ -165,11 +166,15 @@ export default function Header() {
         <div className="flex flex-col ">
           <div
             onClick={() => {
-              setCategoryState(true);
+              setCategoryState((prev) => !prev);
             }}
             className=" cursor-pointer"
           >
-            <img src={menuicon} alt="menuicon" className="w-8 " />
+            {categoryState ? (
+              <img src={cancel} alt="cancel" className="w-12 " />
+            ) : (
+              <img src={menuicon} alt="menuicon" className="w-8 " />
+            )}
           </div>
 
           <div className="absolute w-[1196px] top-full z-50   ">

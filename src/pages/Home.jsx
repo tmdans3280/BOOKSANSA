@@ -5,7 +5,7 @@ import PopularList from "../components/PopularList";
 
 export default function Home() {
   return (
-    <div className="bg-white max-w-[1200px] border-l-2 border-r-2 mx-auto">
+    <div className="bg-white max-w-[1200px]  mx-auto">
       <Header />
       <MainBook />
       <PopularList />

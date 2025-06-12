@@ -35,7 +35,7 @@ export default function BookItem({ item, index }) {
         </div>
 
         <div className="flex flex-col gap-4 w-full mt-12 ml-16 ">
-          <FavoriteButton book={item}/>
+          <FavoriteButton book={item} />
           <a
             href={item.url}
             target="_blank"

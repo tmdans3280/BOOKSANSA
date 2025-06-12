@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import FavoriteButton from "../components/FavoriteButton";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../util/formatDate";
 import { getDocs } from "firebase/firestore";
 import { Navigation } from "swiper/modules";
 import { getReviewByUserId } from "../util/review";
@@ -105,17 +106,30 @@ export default function Home() {
           </Swiper>
         </div>
       </div>
-      <div>
-        <div>내가 쓴 리뷰</div>
-        <div>
-          {reviewList.map((review, index) => (
-            <div key={review.userId + index}>
-              <div>{review.content}</div>
-              <div>
-                <Rating rating={review.rating} />
-              </div>
-            </div>
-          ))}
+      <div className="mt-12">
+        <div className="font-bold text-2xl">내가 작성한 리뷰</div>
+        <div className="mt-7">
+          {reviewList.map((review) => {
+            return (
+              <li key={review.id} className="border flex py-4 h-32  ">
+                <div className="items-center flex ml-3">
+                  <Rating rating={review.rating} readOnly />
+                </div>
+
+                <div className="flex-col ml-12 ">
+                  <div className="text-sm flex">
+                    <div className="mr-4">
+                      {review.userId.slice(0, 3) + "****"}
+                    </div>
+                    <p>|</p>
+                    <div className="ml-4">{formatDate(review.createdAt)}</div>
+                  </div>
+
+                  <div className="mt-2">{review.content}</div>
+                </div>
+              </li>
+            );
+          })}
         </div>
       </div>
     </div>
