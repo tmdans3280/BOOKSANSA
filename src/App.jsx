@@ -4,6 +4,7 @@ import { FavoriteProvider } from "./context/FavoriteContext.jsx";
 import { NewRelProvider } from "./context/NewRelContext.jsx";
 import { PopularProvider } from "./context/PopularContex.jsx";
 import { BookListProvider } from "./context/BookListContext.jsx";
+import { CateGoryProvider } from "./context/CategoryContext.jsx";
 import Router from "./routes/Router.jsx";
 
 function App() {
@@ -13,7 +14,10 @@ function App() {
         <NewRelProvider>
           <FavoriteProvider>
             <BookListProvider>
-              <Router />
+              <CateGoryProvider>
+                <Router />
+              </CateGoryProvider>
+              
             </BookListProvider>
           </FavoriteProvider>
         </NewRelProvider>

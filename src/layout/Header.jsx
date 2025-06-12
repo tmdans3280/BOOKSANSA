@@ -172,7 +172,7 @@ export default function Header() {
             <img src={menuicon} alt="menuicon" className="w-8 " />
           </div>
 
-          <div className="absolute w-[1196px] top-full   ">
+          <div className="absolute w-[1196px] top-full z-50   ">
             {categoryState && <CategoryModal />}
           </div>
         </div>

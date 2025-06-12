@@ -7,6 +7,7 @@ import NewRel from "../pages/NewRel";
 import SignUp from "../pages/Signup";
 import Login from "../pages/Login";
 import MyPage from "../pages/MyPage";
+import CategoryBookList from "../components/CategoryBookList";
 
 export default function Router() {
   return (
@@ -20,6 +21,7 @@ export default function Router() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/categorybooklist" element={<CategoryBookList />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,3 +1,6 @@
+
+import { useNavigate } from "react-router-dom";
+
 const categories = [
   {
     title: "🎨 문학 / 인문",
@@ -21,7 +24,12 @@ const categories = [
   },
 ];
 
+
+
+
 export default function CategoryModal() {
+
+  const nav = useNavigate()
   return (
     <div className="flex space-x-20 bg-red-50 mt-4 z-50 h-[230px] text-center justify-center pt-4">
       {categories.map((category) => (
@@ -29,7 +37,7 @@ export default function CategoryModal() {
           <div className="font-bold text-lg mb-4">{category.title}</div>
           <div className="space-y-2 text-sm">
             {category.items.map((item) => (
-              <div key={item} className="cursor-pointer hover:text-blue-600">
+              <div onClick={() => nav("/categorybooklist", { state: { item } })} key={item} className="cursor-pointer hover:text-blue-600">
                 {item}
               </div>
             ))}
