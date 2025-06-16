@@ -75,24 +75,35 @@ export default function Home() {
             {bookList.map((book) => (
               <SwiperSlide>
                 <div
-                  onClick={() =>
-                    nav("/bookdetail", {
-                      state: {
-                        ...book,
-                      },
-                    })
-                  }
                   key={book.isbn}
-                  className=" h-[224px] rounded-xl border-gray-400 border p-4 flex cursor-pointer"
+                  className=" h-[224px] rounded-xl border-gray-400 border p-4 flex "
                 >
                   <img
+                    onClick={() =>
+                      nav("/bookdetail", {
+                        state: {
+                          ...book,
+                        },
+                      })
+                    }
                     src={book.thumbnail.replace("R120x174", "R300x400")}
                     alt="thumbnail"
-                    className="w-32 h-auto object-cover border border-gray-200 rounded "
+                    className="w-32 h-auto object-cover border border-gray-200 rounded cursor-pointer "
                   />
                   <div className="flex-col">
                     <div className="ml-4">
-                      <div className="font-bold mt-4">{book.title}</div>
+                      <div
+                        onClick={() =>
+                          nav("/bookdetail", {
+                            state: {
+                              ...book,
+                            },
+                          })
+                        }
+                        className="font-bold mt-4 cursor-pointer"
+                      >
+                        {book.title}
+                      </div>
                       <div className="text-sm mt-4">{book.authors}</div>
                       <div className="text-sm mt-1">{book.publisher}</div>
                     </div>
