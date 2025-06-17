@@ -24,7 +24,7 @@ export default function BookList({ ...item }) {
       </div>
       <div className="mt-4 line-clamp-2 h-[3rem]">{item.title}</div>
       <div className="flex items-center  mt-1 gap-1 justify-center">
-        <Rating />
+        <Rating rating={4.5}/>
         <span className="ml-2 text-black text-sm">4.5</span>
       </div>
     </div>

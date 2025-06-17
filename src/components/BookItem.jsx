@@ -26,7 +26,7 @@ export default function BookItem({ item, index }) {
           </div>
 
           <div className="flex gap-2  ">
-            <Rating />
+            <Rating rating={5} />
             4.5
           </div>
           <div className="line-clamp-2 h-[3rem] w-[800px] mt-5">

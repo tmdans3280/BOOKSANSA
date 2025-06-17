@@ -25,6 +25,7 @@ export default function BookDetail() {
     url,
     isbn,
     sale_price,
+
   } = state;
 
   const { bookList, fetchBooks } = useContext(BookListContext);
@@ -32,6 +33,7 @@ export default function BookDetail() {
   const [userId, setUserId] = useState(null);
   const [reviewList, setReviewList] = useState([]);
   const nav = useNavigate();
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -61,9 +63,10 @@ export default function BookDetail() {
   useEffect(
     () => {
       const keyword = state.title?.split(" ")[0];
+      console.log("🔍 추천 키워드:", keyword, "기존 리스트 길이:", bookList.length);
 
       // 키워드가 없거나 너무 짧거나 이미 리스트가 있으면 skip
-      if (!keyword || keyword.length < 2 || bookList.length > 0) return;
+      if (!keyword || keyword.length < 2) return;
 
       fetchBooks({ query: keyword, size: 6 }); // size 줄이기
     }, // eslint-disable-next-line react-hooks/exhaustive-deps

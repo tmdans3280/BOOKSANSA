@@ -7,6 +7,9 @@ import menuicon from "../assets/menuicon.png";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import CategoryModal from "../components/categoryModal";
 import cancel from "../assets/cancel.png";
+import { addDoc, collection, serverTimestamp, where, orderBy, limit, query, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
+
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
@@ -19,9 +22,39 @@ export default function Header() {
   const nav = useNavigate();
 
   const onChangeInput = (e) => {
-    setBookSearch(e.target.value);
+    const keyword = e.target.value
+    setBookSearch(keyword);
     setInputState(true);
   };
+
+  const saveSearchKeyword = async (query) => {
+    if (!query.trim()) { return }
+    try {
+      await addDoc(collection(db, "searchLogs"), {
+        keyword: query,
+        createdAt: serverTimestamp()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+  useEffect(() => {
+    const data = async () => {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000)
+      const q = query(
+        collection(db, "searchLogs"),
+        where("createdAt", ">", since),
+        orderBy("createdAt", "desc"),
+        limit(500)
+      )
+
+      const snap = await getDocs(q);
+
+
+    }
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +71,7 @@ export default function Header() {
           const data = await res.json();
           setSearchList(data.documents);
 
-          setTimeout(() => {}, 300);
+          setTimeout(() => { }, 300);
         } catch (err) {
           console.log("error발생", err);
         }
@@ -74,6 +107,9 @@ export default function Header() {
       nav("/");
     });
   };
+
+
+
 
   return (
     <div className="flex flex-col text-black pb-4 border-b border-gray-700  justify-between max-w-7xl mx-auto">
@@ -123,9 +159,11 @@ export default function Header() {
 
           {inputState && bookSearch.length > 0 && (
             <ul className="absolute top-full  mt-6 w-[700px] bg-gray-500 text-white rounded-lg shadow-lg z-50 max-h-[401.4px] overflow-y-auto ">
-              {searchList.map((item) => (
+              {searchList.map((item, idx) => (
                 <li
-                  onClick={() =>
+                  onClick={() => {
+                    saveSearchKeyword(item.title);
+
                     nav("/bookdetail", {
                       state: {
                         thumbnail: item.thumbnail,
@@ -137,16 +175,21 @@ export default function Header() {
                         contents: item.contents,
                         url: item.url,
                         sale: item.sale_price,
+                        sale_price: item.sale_price,
+                        isbn: item.isbn,
                       },
                     })
                   }
-                  key={item.isbn}
+
+                  }
+                  key={`${item.isbn}-${idx}`}
                   className="flex gap-4 items-center border-b border-gray-700 p-5 hover:bg-neutral-700 cursor-pointer"
                 >
-                  <img
+                  {item.thumbnail && (<img
                     src={item.thumbnail}
                     className="w-16 h-auto object-cover"
-                  />
+                  />)}
+
                   <div>
                     <div className="font-semibold">{item.title}</div>
                     <div className="text-sm text-gray-700">
@@ -158,6 +201,10 @@ export default function Header() {
             </ul>
           )}
         </div>
+
+        <ul>
+          <li>{ }</li>
+        </ul>
       </div>
 
       {/* 메뉴바 */}
@@ -206,6 +253,6 @@ export default function Header() {
           내 서재
         </div>
       </div>
-    </div>
+    </div >
   );
 }

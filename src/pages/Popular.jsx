@@ -24,7 +24,7 @@ export default function Popular() {
 
         <ul className="mt-20 ml-7 ">
           {popularBooks.slice(0, visibleCount).map((item, index) => (
-            <BookItem key={item.isbn13} item={item} index={index} />
+            <BookItem key={item.isbn} item={item} index={index} />
           ))}
         </ul>
         {visibleCount < popularBooks.length && (
