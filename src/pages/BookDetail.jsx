@@ -11,6 +11,7 @@ import { auth } from "../firebase.js";
 import { getDocs } from "firebase/firestore";
 import Rating from "../util/Rating";
 import { getReviewByBookId } from "../util/review.js";
+import { useRef } from "react";
 
 export default function BookDetail() {
   const { state } = useLocation();
@@ -25,7 +26,6 @@ export default function BookDetail() {
     url,
     isbn,
     sale_price,
-
   } = state;
 
   const { bookList, fetchBooks } = useContext(BookListContext);
@@ -33,7 +33,6 @@ export default function BookDetail() {
   const [userId, setUserId] = useState(null);
   const [reviewList, setReviewList] = useState([]);
   const nav = useNavigate();
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -60,18 +59,17 @@ export default function BookDetail() {
     fetchReviewBooks();
   }, [state.isbn]);
 
-  useEffect(
-    () => {
-      const keyword = state.title?.split(" ")[0];
-      console.log("🔍 추천 키워드:", keyword, "기존 리스트 길이:", bookList.length);
+  const fetchedKeywordRef = useRef(null);
 
-      // 키워드가 없거나 너무 짧거나 이미 리스트가 있으면 skip
-      if (!keyword || keyword.length < 2) return;
+  useEffect(() => {
+    const keyword = state.title?.split(" ")[0];
 
-      fetchBooks({ query: keyword, size: 6 }); // size 줄이기
-    }, // eslint-disable-next-line react-hooks/exhaustive-deps
-    [fetchBooks, state.title]
-  );
+    if (!keyword || keyword.length < 2 || fetchedKeywordRef.current === keyword)
+      return;
+
+    fetchedKeywordRef.current = keyword;
+    fetchBooks({ query: keyword, size: 6 });
+  }, [fetchBooks, state.title]);
 
   return (
     <div className="max-w-5xl mx-auto">

@@ -7,9 +7,17 @@ import menuicon from "../assets/menuicon.png";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import CategoryModal from "../components/categoryModal";
 import cancel from "../assets/cancel.png";
-import { addDoc, collection, serverTimestamp, where, orderBy, limit, query, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  where,
+  orderBy,
+  limit,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../firebase";
-
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
@@ -18,46 +26,63 @@ export default function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [categoryState, setCategoryState] = useState(false);
   const inputRef = useRef(null);
+  const [popularKeywords, setPopularKeywords] = useState([]);
 
   const nav = useNavigate();
 
   const onChangeInput = (e) => {
-    const keyword = e.target.value
+    const keyword = e.target.value;
     setBookSearch(keyword);
     setInputState(true);
   };
 
   const saveSearchKeyword = async (query) => {
-    if (!query.trim()) { return }
+    if (!query.trim()) {
+      return;
+    }
     try {
       await addDoc(collection(db, "searchLogs"), {
         keyword: query,
-        createdAt: serverTimestamp()
-      })
+        createdAt: serverTimestamp(),
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-
+  };
 
   useEffect(() => {
-    const data = async () => {
-      const since = new Date(Date.now() - 24 * 60 * 60 * 1000)
+    const fetchPopular = async () => {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
       const q = query(
         collection(db, "searchLogs"),
         where("createdAt", ">", since),
         orderBy("createdAt", "desc"),
         limit(500)
-      )
+      );
 
       const snap = await getDocs(q);
 
+      // 카운트 집계
+      const counts = {};
+      snap.forEach((doc) => {
+        const kw = doc.data().keyword;
+        if (!kw) return;
+        counts[kw] = (counts[kw] || 0) + 1;
+      });
 
-    }
-  }, [])
+      //정렬 후 top10
+      const top10 = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([kw]) => kw);
+
+      setPopularKeywords(top10);
+    };
+    fetchPopular();
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const timer = setTimeout(async () => {
       if (bookSearch.trim()) {
         try {
           const res = await fetch(
@@ -70,16 +95,16 @@ export default function Header() {
           );
           const data = await res.json();
           setSearchList(data.documents);
-
-          setTimeout(() => { }, 300);
         } catch (err) {
           console.log("error발생", err);
         }
       } else {
         setSearchList([]);
       }
-    };
-    fetchData();
+    }, 500); // 500ms 후 실행
+
+    // 이전 타이머 제거
+    return () => clearTimeout(timer);
   }, [bookSearch]);
 
   useEffect(() => {
@@ -107,9 +132,6 @@ export default function Header() {
       nav("/");
     });
   };
-
-
-
 
   return (
     <div className="flex flex-col text-black pb-4 border-b border-gray-700  justify-between max-w-7xl mx-auto">
@@ -178,17 +200,17 @@ export default function Header() {
                         sale_price: item.sale_price,
                         isbn: item.isbn,
                       },
-                    })
-                  }
-
-                  }
+                    });
+                  }}
                   key={`${item.isbn}-${idx}`}
                   className="flex gap-4 items-center border-b border-gray-700 p-5 hover:bg-neutral-700 cursor-pointer"
                 >
-                  {item.thumbnail && (<img
-                    src={item.thumbnail}
-                    className="w-16 h-auto object-cover"
-                  />)}
+                  {item.thumbnail && (
+                    <img
+                      src={item.thumbnail}
+                      className="w-16 h-auto object-cover"
+                    />
+                  )}
 
                   <div>
                     <div className="font-semibold">{item.title}</div>
@@ -202,9 +224,37 @@ export default function Header() {
           )}
         </div>
 
-        <ul>
-          <li>{ }</li>
-        </ul>
+        {/* 검색창 옆 혹은 바로 아래 */}
+        <div className="relative ml-16">
+          <input
+            className="text-black border-2 rounded-xl p-2 w-64"
+            placeholder="검색어를 입력하세요."
+            value={bookSearch}
+            onChange={onChangeInput}
+            // onKeyDown={onKeyDownInput}
+          />
+
+          {/* 인기검색어 박스 */}
+          {popularKeywords.length > 0 && (
+            <ul className="absolute top-full mt-2 bg-white rounded shadow w-64 text-sm z-50">
+              {popularKeywords.map((kw, i) => (
+                <li
+                  key={kw}
+                  className="px-3 py-1 hover:bg-gray-100 cursor-pointer flex justify-between"
+                  onClick={() => {
+                    setBookSearch(kw);
+                    saveSearchKeyword(kw);
+                    nav("/search", { state: { query: kw } });
+                  }}
+                >
+                  <span>
+                    {i + 1}. {kw}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       {/* 메뉴바 */}
@@ -253,6 +303,6 @@ export default function Header() {
           내 서재
         </div>
       </div>
-    </div >
+    </div>
   );
 }
