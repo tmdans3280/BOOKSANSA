@@ -18,6 +18,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import mypage from "../assets/person.png";
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
@@ -226,14 +227,6 @@ export default function Header() {
 
         {/* 검색창 옆 혹은 바로 아래 */}
         <div className="relative ml-16">
-          <input
-            className="text-black border-2 rounded-xl p-2 w-64"
-            placeholder="검색어를 입력하세요."
-            value={bookSearch}
-            onChange={onChangeInput}
-            // onKeyDown={onKeyDownInput}
-          />
-
           {/* 인기검색어 박스 */}
           {popularKeywords.length > 0 && (
             <ul className="absolute top-full mt-2 bg-white rounded shadow w-64 text-sm z-50">
@@ -254,6 +247,15 @@ export default function Header() {
               ))}
             </ul>
           )}
+        </div>
+        {/* 내 서재 */}
+        <div
+          onClick={() => {
+            isLogin ? nav("/mypage") : nav("/login");
+          }}
+          className="ml-52"
+        >
+          <img src={mypage} alt="mypage" className="cursor-pointer" />
         </div>
       </div>
 
@@ -292,16 +294,6 @@ export default function Header() {
             <div className="hover:text-red-400">이벤트</div>
           </div>
         </nav>
-
-        {/* 내 서재 */}
-        <div
-          onClick={() => {
-            isLogin ? nav("/mypage") : nav("/login");
-          }}
-          className="hover:text-red-400 flex mr-6 "
-        >
-          내 서재
-        </div>
       </div>
     </div>
   );

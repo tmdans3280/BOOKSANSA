@@ -28,16 +28,17 @@ export default function MainBook() {
 
   if (!mainBook || mainBook.length === 0) return null;
   return (
-    <div className="flex-col h-[450px] bg-[#fef9f3] mt-12 text-black rounded-xl  w-full max-w-3xl p-20 mx-auto">
-      <h2 className="text-5xl mt-6 font-bold text-center ">TODAY'S PICK</h2>
+    <div className="flex-col h-[450px] mt-12 text-black rounded-xl  w-full max-w-3xl p-20 mx-auto">
       <div className="flex">
         <div>
           <img
-            className="w-48 h-auto rounded-xl shadow"
+            className="w-52 h-auto rounded-md shadow"
             src={mainBook[0].thumbnail.replace("R120x174", "R300x400")}
             alt="noimg"
           />
         </div>
+
+        <div>{mainBook[0].title}</div>
 
         <div className="ml-12 flex flex-col">
           <button
