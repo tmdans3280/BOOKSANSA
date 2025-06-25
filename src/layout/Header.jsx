@@ -18,7 +18,6 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import mypage from "../assets/person.png";
 
 export default function Header() {
   const [bookSearch, setBookSearch] = useState("");
@@ -135,7 +134,7 @@ export default function Header() {
   };
 
   return (
-    <div className="flex flex-col text-black pb-4 border-b border-gray-700  justify-between max-w-7xl mx-auto">
+    <div className="flex flex-col text-black pb-4 justify-between max-w-7xl mx-auto">
       {/* 로그인 회원가입  */}
       <div className="flex justify-end text-sm  mt-6 mb-2 mr-4">
         {isLogin ? (
@@ -249,18 +248,16 @@ export default function Header() {
           )}
         </div>
         {/* 내 서재 */}
-        <div
-          onClick={() => {
-            isLogin ? nav("/mypage") : nav("/login");
-          }}
+        {/* <div
+          onClick={() => (isLogin ? nav("/mypage") : nav("/login"))}
           className="ml-52"
         >
-          <img src={mypage} alt="mypage" className="cursor-pointer" />
-        </div>
+          내서재
+        </div> */}
       </div>
 
       {/* 메뉴바 */}
-      <div className="flex justify-between items-center mt-8 relative ">
+      <div className="flex  items-center mt-8 relative space-x-32 ">
         {/* 카테고리 */}
         <div className="flex flex-col ">
           <div
@@ -290,6 +287,7 @@ export default function Header() {
             <div onClick={() => nav("/newrel")} className="hover:text-red-400">
               신간 도서
             </div>
+            <div className="hover:text-red-400">추천 도서</div>
             <div className="hover:text-red-400">장르별 보기</div>
             <div className="hover:text-red-400">이벤트</div>
           </div>

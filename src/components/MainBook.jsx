@@ -28,8 +28,8 @@ export default function MainBook() {
 
   if (!mainBook || mainBook.length === 0) return null;
   return (
-    <div className="flex-col h-[450px] mt-12 text-black rounded-xl  w-full max-w-3xl p-20 mx-auto">
-      <div className="flex">
+    <div className="flex justify-between">
+      <div className="bg-white h-[450px] mt-12 text-black rounded-xl  w-full max-w-3xl p-20 ">
         <div>
           <img
             className="w-52 h-auto rounded-md shadow"
@@ -53,6 +53,8 @@ export default function MainBook() {
           </button>
         </div>
       </div>
+
+      <div className=" bg-white  h-[450px] "></div>
     </div>
   );
 }
