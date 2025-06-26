@@ -7,7 +7,7 @@ export default function NewReleases() {
   const { publisherBooks } = useContext(BookContext);
 
   return (
-    <div>
+    <div className="bg-white"> 
       <div className="max-w-[1200px] mx-auto">
         <div className="mt-36 mb-12 text-2xl">출판사의 선택</div>
         {publisherBooks.length === 0 ? (

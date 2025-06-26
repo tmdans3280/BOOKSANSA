@@ -7,7 +7,7 @@ export default function PopularList() {
   const { todayBooks } = useContext(BookContext);
 
   return (
-    <div>
+    <div className="bg-white">
       <div className="pt-12 max-w-[1200px] mx-auto">
         <div className="mt-12 mb-12 text-2xl">오늘의 도서</div>
         {todayBooks.length === 0 ? (

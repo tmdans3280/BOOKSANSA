@@ -9,7 +9,7 @@ export default function MainBook() {
     const fetchBooks = async () => {
       try {
         const res = await fetch(
-          `https://dapi.kakao.com/v3/search/book?query=개발자&size=1`,
+          `https://dapi.kakao.com/v3/search/book?query=혼모노&size=1`,
           {
             headers: {
               Authorization: "KakaoAK f53a840709749b9c7fa887e5ccfbd374",
@@ -31,15 +31,18 @@ export default function MainBook() {
     <div>
       <div className="flex justify-between max-w-[1200px] mx-auto ">
         <div className="flex bg-[#FFF5E9]  h-[450px]  text-black rounded-xl w-full max-w-3xl p-20 ">
+          <div className="font-noto text-7xl font-bold">
+            BEST SELLER
+          </div>
           <div>
             <img
-              className="w-52 h-auto rounded-md shadow"
+              className="w-72 h-auto rounded-md shadow"
               src={mainBook[0].thumbnail.replace("R120x174", "R300x400")}
               alt="noimg"
             />
           </div>
 
-          <div>{mainBook[0].title}</div>
+
 
           <div className="ml-12 flex flex-col">
             <button

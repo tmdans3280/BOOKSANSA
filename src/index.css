@@ -5,7 +5,7 @@
   font-family: "NanumPenScript";
   src: url("/NanumPenScript-Regular.ttf");
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Math&display=swap');
 body {
   @apply bg-white text-black;
   margin: 0; /* ✅ 위쪽 여백 제거 */
