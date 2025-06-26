@@ -28,33 +28,35 @@ export default function MainBook() {
 
   if (!mainBook || mainBook.length === 0) return null;
   return (
-    <div className="flex justify-between">
-      <div className="bg-white h-[450px] mt-12 text-black rounded-xl  w-full max-w-3xl p-20 ">
-        <div>
-          <img
-            className="w-52 h-auto rounded-md shadow"
-            src={mainBook[0].thumbnail.replace("R120x174", "R300x400")}
-            alt="noimg"
-          />
+    <div>
+      <div className="flex justify-between max-w-[1200px] mx-auto ">
+        <div className="flex bg-[#FFF5E9]  h-[450px]  text-black rounded-xl w-full max-w-3xl p-20 ">
+          <div>
+            <img
+              className="w-52 h-auto rounded-md shadow"
+              src={mainBook[0].thumbnail.replace("R120x174", "R300x400")}
+              alt="noimg"
+            />
+          </div>
+
+          <div>{mainBook[0].title}</div>
+
+          <div className="ml-12 flex flex-col">
+            <button
+              onClick={() =>
+                nav("/bookdetail", {
+                  state: { ...mainBook[0] },
+                })
+              }
+              className="border rounded-md p-2.5 mt-10  border-white hover:bg-white hover:text-black transition"
+            >
+              더보기
+            </button>
+          </div>
         </div>
 
-        <div>{mainBook[0].title}</div>
-
-        <div className="ml-12 flex flex-col">
-          <button
-            onClick={() =>
-              nav("/bookdetail", {
-                state: { ...mainBook[0] },
-              })
-            }
-            className="border rounded-md p-2.5 mt-10  border-white hover:bg-white hover:text-black transition"
-          >
-            더보기
-          </button>
-        </div>
+        <div className="  w-[250px]  h-[450px]  "></div>
       </div>
-
-      <div className=" bg-white  h-[450px] "></div>
     </div>
   );
 }

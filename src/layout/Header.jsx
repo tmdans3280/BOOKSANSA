@@ -134,164 +134,176 @@ export default function Header() {
   };
 
   return (
-    <div className="flex flex-col text-black pb-4 justify-between max-w-7xl mx-auto">
-      {/* 로그인 회원가입  */}
-      <div className="flex justify-end text-sm  mt-6 mb-2 mr-4">
-        {isLogin ? (
-          <Link to={"/"} onClick={handleLogout} className="hover:text-red-400">
-            로그아웃
-          </Link>
-        ) : (
-          <>
-            <Link to="/login" className="hover:text-red-400">
-              로그인
+    <div className="bg-white">
+      <div className="flex  flex-col bg-white text-black pb-4 justify-between max-w-[1200px]  mx-auto">
+        {/* 로그인 회원가입  */}
+        <div className="flex justify-end text-sm  mt-6 mb-2 mr-4">
+          {isLogin ? (
+            <Link
+              to={"/"}
+              onClick={handleLogout}
+              className="hover:text-red-400"
+            >
+              로그아웃
             </Link>
-            <span className="mx-2 text-gray-500">|</span>
-            <Link to="/signup" className="hover:text-red-400">
-              회원가입
-            </Link>
-          </>
-        )}
-      </div>
-
-      {/*로고 + 검색창 +메뉴들  */}
-      <div className="flex items-center  mt-2">
-        {/* 로고 */}
-        <div
-          onClick={() => nav("/")}
-          className=" items-center text-4xl ml-20 shadow-md cursor-pointer "
-        >
-          <img src={logo} alt="logo" className="w-24" />
+          ) : (
+            <>
+              <Link to="/login" className="hover:text-red-400">
+                로그인
+              </Link>
+              <span className="mx-2 text-gray-500">|</span>
+              <Link to="/signup" className="hover:text-red-400">
+                회원가입
+              </Link>
+            </>
+          )}
         </div>
 
-        {/* 검색창 */}
-        <div ref={inputRef} className="flex flex-col relative  ml-16">
-          <div className="flex  gap-4 text-center relative  ">
-            <input
-              className="text-black border-black border-2 rounded-xl p-6 h-10 w-96 max-w-[600px]  z-0 "
-              value={bookSearch}
-              onChange={onChangeInput}
-              placeholder="검색어를 입력하세요."
-              type="text"
-            />
-            <button className="absolute right-3 top-1/2 transform -translate-y-1/2 pr-2 text-gray-400 ">
-              <FaSearch className=" w-5 h-5" />
-            </button>
+        {/*로고 + 검색창 +메뉴들  */}
+        <div className="flex items-center  mt-2">
+          {/* 로고 */}
+          <div
+            onClick={() => nav("/")}
+            className=" items-center text-4xl ml-20 shadow-md cursor-pointer "
+          >
+            <img src={logo} alt="logo" className="w-24" />
           </div>
 
-          {inputState && bookSearch.length > 0 && (
-            <ul className="absolute top-full  mt-6 w-[700px] bg-gray-500 text-white rounded-lg shadow-lg z-50 max-h-[401.4px] overflow-y-auto ">
-              {searchList.map((item, idx) => (
-                <li
-                  onClick={() => {
-                    saveSearchKeyword(item.title);
+          {/* 검색창 */}
+          <div ref={inputRef} className="flex flex-col relative  ml-16">
+            <div className="flex  gap-4 text-center relative  ">
+              <input
+                className="text-black border-black border-2 rounded-xl p-6 h-10 w-96 max-w-[600px]  z-0 "
+                value={bookSearch}
+                onChange={onChangeInput}
+                placeholder="검색어를 입력하세요."
+                type="text"
+              />
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 pr-2 text-gray-400 ">
+                <FaSearch className=" w-5 h-5" />
+              </button>
+            </div>
 
-                    nav("/bookdetail", {
-                      state: {
-                        thumbnail: item.thumbnail,
-                        title: item.title,
-                        authors: item.authors,
-                        price: item.price,
-                        datetime: item.datetime,
-                        publisher: item.publisher,
-                        contents: item.contents,
-                        url: item.url,
-                        sale: item.sale_price,
-                        sale_price: item.sale_price,
-                        isbn: item.isbn,
-                      },
-                    });
-                  }}
-                  key={`${item.isbn}-${idx}`}
-                  className="flex gap-4 items-center border-b border-gray-700 p-5 hover:bg-neutral-700 cursor-pointer"
-                >
-                  {item.thumbnail && (
-                    <img
-                      src={item.thumbnail}
-                      className="w-16 h-auto object-cover"
-                    />
-                  )}
+            {inputState && bookSearch.length > 0 && (
+              <ul className="absolute top-full  mt-6 w-[700px] bg-gray-500 text-white rounded-lg shadow-lg z-50 max-h-[401.4px] overflow-y-auto ">
+                {searchList.map((item, idx) => (
+                  <li
+                    onClick={() => {
+                      saveSearchKeyword(item.title);
 
-                  <div>
-                    <div className="font-semibold">{item.title}</div>
-                    <div className="text-sm text-gray-700">
-                      {item.authors?.join(", ")}
+                      nav("/bookdetail", {
+                        state: {
+                          thumbnail: item.thumbnail,
+                          title: item.title,
+                          authors: item.authors,
+                          price: item.price,
+                          datetime: item.datetime,
+                          publisher: item.publisher,
+                          contents: item.contents,
+                          url: item.url,
+                          sale: item.sale_price,
+                          sale_price: item.sale_price,
+                          isbn: item.isbn,
+                        },
+                      });
+                    }}
+                    key={`${item.isbn}-${idx}`}
+                    className="flex gap-4 items-center border-b border-gray-700 p-5 hover:bg-neutral-700 cursor-pointer"
+                  >
+                    {item.thumbnail && (
+                      <img
+                        src={item.thumbnail}
+                        className="w-16 h-auto object-cover"
+                      />
+                    )}
+
+                    <div>
+                      <div className="font-semibold">{item.title}</div>
+                      <div className="text-sm text-gray-700">
+                        {item.authors?.join(", ")}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-        {/* 검색창 옆 혹은 바로 아래 */}
-        <div className="relative ml-16">
-          {/* 인기검색어 박스 */}
-          {popularKeywords.length > 0 && (
-            <ul className="absolute top-full mt-2 bg-white rounded shadow w-64 text-sm z-50">
-              {popularKeywords.map((kw, i) => (
-                <li
-                  key={kw}
-                  className="px-3 py-1 hover:bg-gray-100 cursor-pointer flex justify-between"
-                  onClick={() => {
-                    setBookSearch(kw);
-                    saveSearchKeyword(kw);
-                    nav("/search", { state: { query: kw } });
-                  }}
-                >
-                  <span>
-                    {i + 1}. {kw}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        {/* 내 서재 */}
-        {/* <div
+          {/* 검색창 옆 혹은 바로 아래 */}
+          <div className="relative ml-16">
+            {/* 인기검색어 박스 */}
+            {popularKeywords.length > 0 && (
+              <ul className="absolute top-full mt-2 bg-white rounded shadow w-64 text-sm z-50">
+                {popularKeywords.map((kw, i) => (
+                  <li
+                    key={kw}
+                    className="px-3 py-1 hover:bg-gray-100 cursor-pointer flex justify-between"
+                    onClick={() => {
+                      setBookSearch(kw);
+                      saveSearchKeyword(kw);
+                      nav("/search", { state: { query: kw } });
+                    }}
+                  >
+                    <span>
+                      {i + 1}. {kw}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {/* 내 서재 */}
+          {/* <div
           onClick={() => (isLogin ? nav("/mypage") : nav("/login"))}
           className="ml-52"
         >
           내서재
         </div> */}
-      </div>
-
-      {/* 메뉴바 */}
-      <div className="flex  items-center mt-8 relative space-x-32 ">
-        {/* 카테고리 */}
-        <div className="flex flex-col ">
-          <div
-            onClick={() => {
-              setCategoryState((prev) => !prev);
-            }}
-            className=" cursor-pointer"
-          >
-            {categoryState ? (
-              <img src={cancel} alt="cancel" className="w-12 " />
-            ) : (
-              <img src={menuicon} alt="menuicon" className="w-8 " />
-            )}
-          </div>
-
-          <div className="absolute w-[1196px] top-full z-50   ">
-            {categoryState && <CategoryModal />}
-          </div>
         </div>
 
-        {/* 메뉴 */}
-        <nav className="flex cursor-pointer ">
-          <div className="flex gap-24 text-xl">
-            <div onClick={() => nav("/popular")} className="hover:text-red-400">
-              인기 도서
+        {/* 메뉴바 */}
+        <div className="flex  items-center mt-8 relative space-x-32 ">
+          {/* 카테고리 */}
+          <div className="flex flex-col ">
+            <div
+              onClick={() => {
+                setCategoryState((prev) => !prev);
+              }}
+              className=" cursor-pointer"
+            >
+              {categoryState ? (
+                <img src={cancel} alt="cancel" className="w-12 " />
+              ) : (
+                <img src={menuicon} alt="menuicon" className="w-8 " />
+              )}
             </div>
-            <div onClick={() => nav("/newrel")} className="hover:text-red-400">
-              신간 도서
+
+            <div className="absolute w-[1196px] top-full z-50   ">
+              {categoryState && <CategoryModal />}
             </div>
-            <div className="hover:text-red-400">추천 도서</div>
-            <div className="hover:text-red-400">장르별 보기</div>
-            <div className="hover:text-red-400">이벤트</div>
           </div>
-        </nav>
+
+          {/* 메뉴 */}
+          <nav className="flex cursor-pointer ">
+            <div className="flex gap-24 text-xl">
+              <div
+                onClick={() => nav("/popular")}
+                className="hover:text-red-400"
+              >
+                인기 도서
+              </div>
+              <div
+                onClick={() => nav("/newrel")}
+                className="hover:text-red-400"
+              >
+                신간 도서
+              </div>
+              <div className="hover:text-red-400">추천 도서</div>
+              <div className="hover:text-red-400">장르별 보기</div>
+              <div className="hover:text-red-400">이벤트</div>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
   );
