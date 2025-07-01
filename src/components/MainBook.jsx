@@ -46,7 +46,7 @@ export default function MainBook() {
           {mainBook.map((book, index) => (
             <div key={index}>
               <img
-                className="w-60 h-auto rounded-md shadow"
+                className="w-56 h-auto rounded-md shadow"
                 src={mainBook[index].thumbnail.replace("R120x174", "R300x400")}
                 alt="noimg"
                 onClick={() =>

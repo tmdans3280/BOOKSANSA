@@ -27,11 +27,11 @@ export default function CategoryModal() {
   const nav = useNavigate();
 
   return (
-    <div className="flex space-x-20 rounded-xl bg-red-50 mt-4 z-50 h-[230px] text-center justify-center pt-4">
+    <div className="flex space-x-20 border border-black rounded-xl bg-red-50 mt-4 z-50 h-[300px] text-center justify-center pt-4">
       {categories.map((category) => (
         <div key={category.title}>
-          <div className="font-bold text-lg mb-4">{category.title}</div>
-          <div className="space-y-2 text-sm">
+          <div className="font-bold text-lg mb-6">{category.title}</div>
+          <div className="space-y-4 text-sm">
             {category.items.map((item) => (
               <div
                 onClick={() => nav("/categorybooklist", { state: { item } })}
